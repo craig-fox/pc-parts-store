@@ -1,6 +1,8 @@
+import type { ProductSortOption } from "../../types/ProductSortOption";
+
 type SortSelectorProps = {
-    value: string;
-    onChange: (value: string) => void;
+    value: ProductSortOption;
+    onChange: (value: ProductSortOption) => void;
 };
 
 function SortSelector({
@@ -19,7 +21,7 @@ function SortSelector({
             <select
                 id="sort"
                 value={value}
-                onChange={(event) => onChange(event.target.value)}
+                onChange={(event) => onChange(event.target.value as ProductSortOption)}
                 className="rounded-md border border-slate-300 px-4 py-2"
             >
                 <option value="name">Name</option>

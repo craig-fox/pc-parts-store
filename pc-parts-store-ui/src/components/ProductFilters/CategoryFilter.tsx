@@ -1,6 +1,8 @@
+import type { ProductCategory } from "../../types/ProductCategory";
+
 type CategoryFilterProps = {
-    value: string;
-    onChange: (value: string) => void;
+    value: ProductCategory;
+    onChange: (value: ProductCategory) => void;
 };
 
 function CategoryFilter({
@@ -27,7 +29,7 @@ function CategoryFilter({
             <select
                 id="category"
                 value={value}
-                onChange={(event) => onChange(event.target.value)}
+                onChange={(event) => onChange(event.target.value as ProductCategory)}
                 className="rounded-md border border-slate-300 px-4 py-2"
             >
                 {categories.map((category) => (

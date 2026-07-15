@@ -1,20 +1,27 @@
 import SearchInput from "./SearchInput";
 import CategoryFilter from "./CategoryFilter";
 import SortSelector from "./SortSelector";
+import type { ProductSortOption } from "../../types/ProductSortOption";
+import type { ProductCategory } from "../../types/ProductCategory";
+import ProductCount from "./ProductCount";
+
 
 type ProductFiltersProps = {
     searchTerm: string;
-    category: string;
-    sortBy: string;
+    category: ProductCategory;
+    sortBy: ProductSortOption;
+    productCount: number;
+
     onSearchChange: (value: string) => void;
-    onCategoryChange: (value: string) => void;
-    onSortChange: (value: string) => void;
-};
+    onCategoryChange: (value: ProductCategory) => void;
+    onSortChange: (value: ProductSortOption) => void;
+}    
 
 function ProductFilters({
     searchTerm,
     category,
     sortBy,
+    productCount,
     onSearchChange,
     onCategoryChange,
     onSortChange,
@@ -35,6 +42,10 @@ function ProductFilters({
                 value={sortBy}
                 onChange={onSortChange}
             />
+
+            <div className="mt-6 flex justify-end">
+                <ProductCount count={productCount} />
+            </div>
         </div>
     );
 }
