@@ -23,6 +23,7 @@ describe("CartPage", () => {
                 { product: testProducts[2], quantity: 1 },
             ],
             totalItems: 3,
+            totalWeight: 1.0,
             totalPrice: 2597,
             addItem: vi.fn(),
             removeItem: vi.fn(),

@@ -1,33 +1,81 @@
 import { useCart } from "../../context/CartContext";
+import { calculateShipping } from "../../utils/Shipping";
+import { formatCurrency } from "../../utils/currency";
 
 function OrderSummary() {
-    const { items, totalItems, totalPrice } = useCart();
-    
+    const {
+        items,
+        totalItems,
+        totalPrice,
+        totalWeight,
+    } = useCart();
+
+    const shipping = calculateShipping(totalPrice, totalWeight);
+    const total = totalPrice + shipping;
 
     return (
-        <aside className="rounded-lg border border-slate-200 bg-white p-6">
-            <h2 className="text-2xl font-semibold">Order Summary</h2>
+        <section className="rounded-lg border border-slate-200 bg-white p-6">
+            <h2 className="text-2xl font-semibold">
+                Order Summary
+            </h2>
 
-            <ul className="mt-6 space-y-3">
-                {items.map((item) => (
-                    <li key={item.product.id}>{item.product.name}</li>
+            <div className="mt-6 space-y-4">
+
+                {items.map(item => (
+                    <div
+                        key={item.product.id}
+                        className="flex justify-between gap-4"
+                    >
+                        <span>
+                            {item.product.name} × {item.quantity}
+                        </span>
+
+                        <span>
+                            {formatCurrency(item.product.price * item.quantity)}
+                        </span>
+                    </div>
                 ))}
-            </ul>
+
+            </div>
 
             <hr className="my-6 border-slate-200" />
 
             <dl className="space-y-4">
-                <div>
+
+                <div className="flex justify-between">
                     <dt>Items</dt>
                     <dd>{totalItems}</dd>
                 </div>
 
-                <div>
-                    <dt>Subtotal</dt>
-                    <dd>${totalPrice}</dd>
+                <div className="flex justify-between">
+                    <dt>Weight</dt>
+                    <dd>{totalWeight.toFixed(2)} kg</dd>
                 </div>
+
+                <div className="flex justify-between">
+                    <dt>Subtotal</dt>
+                    <dd>{formatCurrency(totalPrice)}</dd>
+                </div>
+
+                <div className="flex justify-between">
+                    <dt>Shipping</dt>
+                    <dd>
+                        {shipping === 0
+                            ? "FREE"
+                            : formatCurrency(shipping)}
+                    </dd>
+                </div>
+
             </dl>
-        </aside>
+
+            <hr className="my-6 border-slate-200" />
+
+            <div className="flex items-center justify-between text-lg font-semibold">
+                <span>Total</span>
+                <span>{formatCurrency(total)}</span>
+            </div>
+
+        </section>
     );
 }
 

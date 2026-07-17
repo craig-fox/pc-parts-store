@@ -43,7 +43,7 @@ function CartSummary() {
                 </span>
 
                 <span className="text-lg font-semibold">
-                    Calculated at checkout
+                    Calculated after shipping
                 </span>
             </div>
 
