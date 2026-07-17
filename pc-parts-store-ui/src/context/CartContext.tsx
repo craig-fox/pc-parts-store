@@ -15,6 +15,8 @@ type CartContextValue = {
 
     totalItems: number;
 
+    totalWeight: number;
+
     totalPrice: number;
 
     addItem: (product: Product) => void;
@@ -64,6 +66,12 @@ export function CartProvider({
         0
     );
 
+    const totalWeight = state.items.reduce(
+        (total, item) =>
+            total + item.product.weightKg * item.quantity,
+        0
+    );
+
     const totalPrice = items.reduce(
         (total, item) => total + item.product.price * item.quantity,
         0
@@ -74,6 +82,8 @@ export function CartProvider({
         items,
 
         totalItems,
+
+        totalWeight,
 
         totalPrice,
 
@@ -108,7 +118,6 @@ export function CartProvider({
         },
     };
 
-    console.log(state.items);
 
     return (
         <CartContext.Provider value={value}>

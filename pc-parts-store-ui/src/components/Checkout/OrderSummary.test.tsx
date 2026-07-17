@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import OrderSummary from "./OrderSummary";
 import { useCart } from "../../context/CartContext";
 import { testProducts } from "../../test/fixtures/products";
+import { formatCurrency } from "../../utils/currency";
 
 vi.mock("../../context/CartContext", () => ({
     useCart: vi.fn(),
@@ -18,6 +19,7 @@ describe("OrderSummary", () => {
             ],
             totalItems: 3,
             totalPrice: 2597,
+            totalWeight: 1.28,
             addItem: vi.fn(),
             removeItem: vi.fn(),
             updateQuantity: vi.fn(),
@@ -27,9 +29,11 @@ describe("OrderSummary", () => {
         render(<OrderSummary />);
 
         expect(screen.getByRole("heading", { name: "Order Summary" })).toBeInTheDocument();
-        expect(screen.getByText(testProducts[0].name)).toBeInTheDocument();
-        expect(screen.getByText(testProducts[2].name)).toBeInTheDocument();
+        expect(screen.getByText(new RegExp(testProducts[0].name))).toBeInTheDocument();
+        expect(screen.getByText(new RegExp(testProducts[2].name))).toBeInTheDocument();
         expect(screen.getByText("3")).toBeInTheDocument();
-        expect(screen.getByText("$2597")).toBeInTheDocument();
+        expect(
+            screen.getAllByText(formatCurrency(2597))
+        ).toHaveLength(2);
     });
 });
