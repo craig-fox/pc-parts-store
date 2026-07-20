@@ -36,6 +36,7 @@ const testProduct: Product = {
     description: "8-Core Gaming Processor",
     category: "CPU",
     price: 799,
+    weightKg: 0.04,
     imageUrl: "",
     brand: "AMD",
     stockQuantity: 42,
