@@ -1,26 +1,24 @@
-import { useState } from "react";
 import type { Checkout } from "../../types/Checkout";
+import type { CheckoutErrors } from "../../types/CheckoutErrors";
 
-function CheckoutForm() {
-    const [checkout, setCheckout] = useState<Checkout>({
-        customer: {
-            firstName: "",
-            lastName: "",
-            email: "",
-        },
-        shippingAddress: {
-            addressLine1: "",
-            city: "",
-            postcode: "",
-            country: "",
-        },
-    });
+interface CheckoutFormProps {
+    checkout: Checkout;
+    setCheckout: React.Dispatch<React.SetStateAction<Checkout>>;
+    errors: CheckoutErrors;
+}
+
+function CheckoutForm({
+    checkout,
+    setCheckout,
+    errors
+}: CheckoutFormProps) {
+
 
     const updateCustomer = (
         field: keyof Checkout["customer"],
         value: string
     ) => {
-        setCheckout((current) => ({
+        setCheckout(current => ({
             ...current,
             customer: {
                 ...current.customer,
@@ -33,7 +31,7 @@ function CheckoutForm() {
         field: keyof Checkout["shippingAddress"],
         value: string
     ) => {
-        setCheckout((current) => ({
+        setCheckout(current => ({
             ...current,
             shippingAddress: {
                 ...current.shippingAddress,
@@ -42,10 +40,15 @@ function CheckoutForm() {
         }));
     };
 
-    const inputClass = "rounded-md border border-slate-300 px-3 py-2";
+    const getInputClass = (hasError: boolean) =>
+        `rounded-md border px-3 py-2 ${
+            hasError
+                ? "border-red-500"
+                : "border-slate-300"
+        }`;
 
     return (
-        <form className="space-y-6 rounded-lg border border-slate-200 bg-white p-6">
+        <div className="space-y-6 rounded-lg border border-slate-200 bg-white p-6">
             <div className="grid gap-6 sm:grid-cols-2">
                 <div className="flex flex-col">
                     <label htmlFor="first-name" className="mb-2 font-medium">
@@ -59,8 +62,15 @@ function CheckoutForm() {
                         onChange={(e) =>
                             updateCustomer("firstName", e.target.value)
                         }
-                        className={inputClass}
+                        className={getInputClass(
+                            !!errors.firstName
+                        )}
                     />
+                    {errors.firstName && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {errors.firstName}
+                        </p>
+                    )}
                 </div>
 
                 <div className="flex flex-col">
@@ -75,8 +85,15 @@ function CheckoutForm() {
                         onChange={(e) =>
                             updateCustomer("lastName", e.target.value)
                         }
-                        className={inputClass}
+                        className={getInputClass(
+                            !!errors.lastName
+                        )}
                     />
+                    {errors.lastName && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {errors.lastName}
+                        </p>
+                    )}
                 </div>
             </div>
 
@@ -92,8 +109,15 @@ function CheckoutForm() {
                     onChange={(e) =>
                         updateCustomer("email", e.target.value)
                     }
-                    className={inputClass}
+                    className={getInputClass(
+                        !!errors.email
+                    )}
                 />
+                {errors.email && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {errors.email}
+                        </p>
+                    )}
             </div>
 
             <div className="flex flex-col">
@@ -111,8 +135,15 @@ function CheckoutForm() {
                             e.target.value
                         )
                     }
-                    className={inputClass}
+                    className={getInputClass(
+                        !!errors.address
+                    )}
                 />
+                {errors.address && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {errors.address}
+                        </p>
+                    )}
             </div>
 
             <div className="grid gap-6 sm:grid-cols-3">
@@ -131,8 +162,16 @@ function CheckoutForm() {
                                 e.target.value
                             )
                         }
-                        className={inputClass}
+                        className={getInputClass(
+                            !!errors.city
+                        )}
                     />
+                    {errors.city && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {errors.city}
+                        </p>
+                    )}
+                    
                 </div>
 
                 <div className="flex flex-col">
@@ -150,8 +189,16 @@ function CheckoutForm() {
                                 e.target.value
                             )
                         }
-                        className={inputClass}
+                        className={getInputClass(
+                            !!errors.postcode
+                        )}
                     />
+                    {errors.postcode && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {errors.postcode}
+                        </p>
+                    )}
+                    
                 </div>
 
                 <div className="flex flex-col">
@@ -169,11 +216,18 @@ function CheckoutForm() {
                                 e.target.value
                             )
                         }
-                        className={inputClass}
+                        className={getInputClass(
+                            !!errors.country
+                        )}
                     />
+                    {errors.country && (
+                        <p className="mt-1 text-sm text-red-600">
+                            {errors.country}
+                        </p>
+                    )}
                 </div>
             </div>
-        </form>
+        </div>
     );
 }
 

@@ -1,4 +1,4 @@
-export function calculateShipping(
+export function calculateShippingCost(
     subtotal: number,
     totalWeight: number
 ): number {

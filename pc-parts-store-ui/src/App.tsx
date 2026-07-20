@@ -9,6 +9,7 @@ import OrdersPage from "./pages/OrdersPage";
 import LoginPage from "./pages/LoginPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 function App() {
     return (
@@ -47,6 +48,11 @@ function App() {
                     <Route
                         path="/products/:id"
                         element={<ProductDetailsPage />}
+                    />
+
+                    <Route
+                        path="/order-confirmation"
+                        element={<OrderConfirmationPage />}
                     />
 
                 </Route>

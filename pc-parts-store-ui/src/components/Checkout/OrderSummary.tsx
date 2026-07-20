@@ -1,5 +1,5 @@
 import { useCart } from "../../context/CartContext";
-import { calculateShipping } from "../../utils/shipping";
+import { calculateShippingCost } from "../../utils/shipping";
 import { formatCurrency } from "../../utils/currency";
 
 function OrderSummary() {
@@ -10,7 +10,7 @@ function OrderSummary() {
         totalWeight,
     } = useCart();
 
-    const shipping = calculateShipping(totalPrice, totalWeight);
+    const shipping = calculateShippingCost(totalPrice, totalWeight);
     const total = totalPrice + shipping;
 
     return (
