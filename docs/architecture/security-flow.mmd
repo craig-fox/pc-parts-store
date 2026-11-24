@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant B as Browser
+    participant ALB as Application Load Balancer
+    participant GW as API Gateway
+    participant AUTH as Authentication Service
+    participant SVC as Target Backend Service
+    participant SEC as security-common
+
+    B->>ALB: POST /api/auth/login
+    ALB->>GW: Forward request
+    GW->>AUTH: Route /api/auth/**
+    AUTH->>AUTH: Authenticate credentials
+    AUTH-->>B: Return JWT via Gateway and ALB
+
+    B->>ALB: Subsequent API request + JWT
+    ALB->>GW: Forward request
+    GW->>SVC: Route to destination service
+    SVC->>SEC: Validate JWT using shared library
+    SEC-->>SVC: Validation result
+    SVC-->>B: API response

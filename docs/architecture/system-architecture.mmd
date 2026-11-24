@@ -1,0 +1,88 @@
+flowchart TB
+    Browser["Customer browser"]
+
+    subgraph FRONTEND["Frontend delivery"]
+        CF["Amazon CloudFront"]
+        S3["Amazon S3<br/>React static build"]
+    end
+
+    Browser -->|"HTTPS: load application"| CF
+    CF -->|"Retrieve static assets"| S3
+    CF -->|"Deliver React assets"| Browser
+
+    subgraph AWS["AWS ap-southeast-2"]
+        subgraph VPC["Amazon VPC"]
+            ALB["Application Load Balancer<br/>Public API entry point"]
+
+            subgraph ECS["Amazon ECS / AWS Fargate"]
+                GW["API Gateway"]
+                AUTH["Authentication Service"]
+                CUST["Customer Service"]
+                PROD["Product Service"]
+                INV["Inventory Service"]
+                ORD["Order Service"]
+                PAY["Payment Service"]
+                SHIP["Shipping Service"]
+            end
+
+            CM["AWS Cloud Map<br/>Private DNS service discovery"]
+
+            subgraph RDS["Amazon RDS PostgreSQL — single instance"]
+                CDB[("customerdb")]
+                PDB[("productdb")]
+                IDB[("inventorydb")]
+                ODB[("orderdb")]
+                PAYDB[("paymentdb")]
+                SDB[("shippingdb")]
+                DEFAULTDB[("pcparts<br/>Default configured database")]
+            end
+        end
+
+        ECR["Amazon ECR"]
+        SM["AWS Secrets Manager"]
+        CW["Amazon CloudWatch"]
+    end
+
+    Browser -->|"HTTPS API requests<br/>JWT where required"| ALB
+    ALB -->|"Forward requests"| GW
+
+    GW -->|"/api/auth/**"| AUTH
+    GW -->|"/api/customers/**"| CUST
+    GW -->|"/api/products/** and /images/**"| PROD
+    GW -->|"/api/orders/**"| ORD
+
+    AUTH -->|"HTTP / REST"| CUST
+
+    ORD -->|"HTTP / REST"| CUST
+    ORD -->|"HTTP / REST"| PROD
+    ORD -->|"HTTP / REST"| INV
+    ORD -->|"HTTP / REST"| PAY
+    ORD -->|"HTTP / REST"| SHIP
+
+    GW -.->|"Private DNS resolution"| CM
+    AUTH -.->|"Private DNS resolution"| CM
+    ORD -.->|"Private DNS resolution"| CM
+
+    CUST --> CDB
+    PROD --> PDB
+    INV --> IDB
+    ORD --> ODB
+    PAY --> PAYDB
+    SHIP --> SDB
+    AUTH --> DEFAULTDB
+
+    ECR -.->|"Container images"| ECS
+    SM -.->|"Runtime secrets and configuration"| ECS
+    ECS -.->|"Container logs"| CW
+
+    subgraph SHARED["Shared application code"]
+        SECURITY["security-common<br/>JWT validation components"]
+    end
+
+    AUTH -.-> SECURITY
+    CUST -.-> SECURITY
+    PROD -.-> SECURITY
+    INV -.-> SECURITY
+    ORD -.-> SECURITY
+    PAY -.-> SECURITY
+    SHIP -.-> SECURITY

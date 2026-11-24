@@ -1,0 +1,36 @@
+flowchart TB
+    subgraph REPOS["GitHub repositories"]
+        API["pc-parts-store-api"]
+        UI["pc-parts-store-ui"]
+        INFRA["pc-parts-infrastructure"]
+        E2EREPO["pc-parts-store-e2e"]
+    end
+
+    subgraph DEPLOY["Build and deployment"]
+        DOCKER["Docker image builds"]
+        ECR["Amazon ECR"]
+        TF["Terraform"]
+        ECS["Amazon ECS / Fargate"]
+        FRONTEND["Amazon S3 + CloudFront"]
+    end
+
+    subgraph TESTING["External test execution"]
+        LOCAL["Developer's local machine"]
+        CUCUMBER["Cucumber E2E test suite"]
+        TARGET["Deployed frontend and API"]
+    end
+
+    API --> DOCKER
+    DOCKER --> ECR
+    ECR --> ECS
+
+    UI --> FRONTEND
+    INFRA --> TF
+    TF --> ECS
+    TF --> FRONTEND
+
+    E2EREPO --> LOCAL
+    LOCAL --> CUCUMBER
+    CUCUMBER -->|"HTTP / HTTPS tests"| TARGET
+    TARGET --> ECS
+    TARGET --> FRONTEND
