@@ -1,55 +1,39 @@
-
 # PC Parts Store
 
-A full-stack e-commerce application demonstrating enterprise
-software engineering, microservices architecture, automated
-testing and AWS infrastructure as code.
+A full-stack e-commerce application demonstrating enterprise software engineering, microservices architecture, automated testing and AWS infrastructure as code.
 
 ## Overview
 
-PC Parts Store is a distributed application designed to
-demonstrate the design, development, testing and deployment
-of a modern e-commerce platform.
+PC Parts Store is a distributed application designed to demonstrate the design, development, testing and deployment of a modern e-commerce platform.
 
 The solution comprises four independently maintained projects.
 
 ## Architecture
 
-![System Architecture](architecture/system-architecture.png)
+### System Architecture
 
-## Project Components
+![System Architecture](docs/architecture/system-architecture.svg)
 
-### 1. Backend API
-Java 25 | Spring Boot 4 | PostgreSQL
+### Deployment Architecture
 
-A modular microservices backend providing authentication,
-customer, product, order, inventory, payment and shipping
-capabilities.
+![Deployment Architecture](docs/architecture/deployment-architecture.svg)
 
-[View Backend Repository](API_REPOSITORY_URL)
+### Security Flow
 
-### 2. Frontend Application
-React | TypeScript | Vite | Tailwind CSS
+![JWT Security Flow](docs/architecture/security-flow.svg)
 
-A customer-facing web application integrating with the
-backend services.
+The editable Mermaid diagram sources are also included in [`docs/architecture/`](docs/architecture/).
 
-[View Frontend Repository](UI_REPOSITORY_URL)
+## Project Repositories
 
-### 3. End-to-End Testing
-Cucumber | Automated Testing
+The PC Parts Store platform is maintained across four independent repositories:
 
-Automated end-to-end testing of key application workflows.
-
-[View E2E Repository](E2E_REPOSITORY_URL)
-
-### 4. AWS Infrastructure
-Terraform | AWS | ECS | ECR | RDS
-
-Infrastructure as code for provisioning and deploying
-the application on AWS.
-
-[View Infrastructure Repository](INFRA_REPOSITORY_URL)
+| Repository | Description |
+|---|---|
+| [pc-parts-store-api](https://github.com/craig-fox/pc-parts-store-api) | Spring Boot microservices backend |
+| [pc-parts-store-ui](https://github.com/craig-fox/pc-parts-store-ui) | React frontend application |
+| [pc-parts-store-e2e](https://github.com/craig-fox/pc-parts-store-e2e) | Cucumber end-to-end tests |
+| [pc-parts-infrastructure](https://github.com/craig-fox/pc-parts-infrastructure) | Terraform and AWS infrastructure |
 
 ## Engineering Highlights
 
@@ -68,10 +52,8 @@ the application on AWS.
 
 ## Technology Stack
 
-Java 25, Spring Boot 4, React, TypeScript, PostgreSQL,
-Cucumber, Maven, Docker, Terraform and AWS.
+Java 25, Spring Boot 4, React, TypeScript, PostgreSQL, Cucumber, Maven, Docker, Terraform and AWS.
 
 ## Project Documentation
 
-See the individual repositories for implementation
-details, build instructions and technical documentation.
+See the individual repositories for implementation details, build instructions and technical documentation.
